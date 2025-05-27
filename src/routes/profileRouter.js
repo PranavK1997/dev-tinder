@@ -2,6 +2,7 @@ const { userAuth } = require("../middlewares/auth");
 const user = require("../models/user");
 const validator = require("validator");
 const { validateEditProfileData } = require("../utils/validate");
+const bcrypt = require("bcrypt");
 
 const express = require("express");
 const profileRouter = express.Router();
@@ -13,14 +14,14 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     if (!user) {
       throw new Error("User does not exist!!");
     } else {
-      res.send(user);
+      res.json({ user });
     }
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);
   }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+profileRouter.put("/profile/edit", userAuth, async (req, res) => {
   try {
     if (!validateEditProfileData(req)) {
       throw new Error("Invalid edit request");
@@ -35,9 +36,7 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
     res.json({
       status: "success",
       message: `${loggedInUser.firstName}, your profile is update succesfully.`,
-      data: {
-        loggedInUser,
-      },
+      data: loggedInUser,
     });
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);

@@ -1,27 +1,37 @@
 const express = require("express");
 const connectDB = require("./config/database");
-const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
-const requestRouter = require("./routes/requestRouter");
+const connectionRequestRouter = require("./routes/connectionRequestRouter");
 const userRouter = require("./routes/userRouter");
 
+const app = express();
+
+// CORS configuration
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
+// Handle preflight requests
+// app.options("*", cors());
+
 app.use(express.json());
 app.use(cookieParser());
 
+// Route handlers
 app.use("/", authRouter);
 app.use("/", profileRouter);
-app.use("/", requestRouter);
+app.use("/", connectionRequestRouter);
 app.use("/", userRouter);
 
+// Connect to database and start server
 connectDB()
   .then(() => {
     console.log("Database connection is successful...");
@@ -30,5 +40,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.error("Database connection failed!!");
+    console.error("Database connection failed!!", err);
   });
