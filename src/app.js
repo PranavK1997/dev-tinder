@@ -3,6 +3,8 @@ const connectDB = require("./config/database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+require("dotenv").config();
+
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const connectionRequestRouter = require("./routes/connectionRequestRouter");
@@ -35,7 +37,7 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("Database connection is successful...");
-    app.listen(3000, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server started listening at 3000...");
     });
   })

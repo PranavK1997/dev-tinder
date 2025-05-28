@@ -91,7 +91,7 @@ authRouter.get("/me", async (req, res) => {
       return res.status(401).json({ message: "Not authenticated" });
     }
 
-    const decoded = jwt.verify(token, "DEV@TINDER$790");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findById(decoded._id).select("-password -__v");
 
