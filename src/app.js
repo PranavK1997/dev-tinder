@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config();
+require("./utils/cronJob");
 
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
