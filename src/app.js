@@ -10,6 +10,7 @@ const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
 const connectionRequestRouter = require("./routes/connectionRequestRouter");
 const userRouter = require("./routes/userRouter");
+const paymentRouter = require("./routes/paymentRouter");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", connectionRequestRouter);
 app.use("/", userRouter);
+app.use("/", paymentRouter);
 
 // Connect to database and start server
 connectDB()
