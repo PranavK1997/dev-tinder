@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const http = require("http");
 
 require("dotenv").config();
 require("./utils/cronJob");
@@ -11,6 +12,8 @@ const profileRouter = require("./routes/profileRouter");
 const connectionRequestRouter = require("./routes/connectionRequestRouter");
 const userRouter = require("./routes/userRouter");
 const paymentRouter = require("./routes/paymentRouter");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chatRouter");
 
 const app = express();
 
@@ -35,12 +38,16 @@ app.use("/", profileRouter);
 app.use("/", connectionRequestRouter);
 app.use("/", userRouter);
 app.use("/", paymentRouter);
+app.use("/", chatRouter);
+
+const server = http.createServer(app);
+initializeSocket(server);
 
 // Connect to database and start server
 connectDB()
   .then(() => {
     console.log("Database connection is successful...");
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log("Server started listening at 3000...");
     });
   })
